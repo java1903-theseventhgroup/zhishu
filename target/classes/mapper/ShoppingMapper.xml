@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.qf.dao.ShoppingDao">
+    <resultMap id="CourseResult" type="course">
+        <id property="courseId" column="course_id"></id>
+        <result property="courseTitleImgurl" column="course_title_imgurl"></result>
+        <result property="courseSubtitle" column="course_subtitle"></result>
+        <result property="courseSummary" column="course_summary"></result>
+        <result property="courseAuthor" column="course_author"></result>
+        <result property="courseClassNum" column="course_class_num"></result>
+        <result property="courseSprice" column="course_sprice"></result>
+        <result property="courseStudyPeoples" column="course_study_peoples"></result>
+        <result property="courseImgurl" column="course_imgurl"></result>
+        <result property="courseOtherImgurl" column="course_other_imgurl"></result>
+        <result property="courseTeacherIntro" column="course_teacher_intro"></result>
+        <result property="courseFeatureIntroI" column="course_feature_intro_i"></result>
+        <result property="courseFeatureIntroII" column="course_feature_intro_ii"></result>
+        <result property="courseTitle" column="course_title"></result>
+        <result property="coursePeoples" column="course_peoples"></result>
+        <result property="courseTableImgurl" column="course_table_imgurl"></result>
+        <result property="coursePurchaseAttention" column="course_purchase_attention"></result>
+        <result property="courseCollege" column="course_college"></result>
+        <result property="courseUpdateTime" column="course_update_time"></result>
+    </resultMap>
+   <!-- 根据传回的课程id查询当前的对象-->
+    <select id="findShopById" parameterType="int" resultMap="CourseResult">
+        select * from course where course_id=#{courseId}
+    </select>
+</mapper>

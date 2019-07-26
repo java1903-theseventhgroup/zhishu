@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.qf.dao.ShoppingCar1Dao">
+    <resultMap id="shoppingCarResult" type="com.qf.domain.ShoppingCar1">
+        <id property="courseId" column="course_id"></id>
+        <result property="courseTitleImgurl" column="course_title_imgurl"></result>
+        <result property="courseSubtitle" column="course_subtitle"></result>
+        <result property="courseSummary" column="course_summary"></result>
+        <result property="courseAuthor" column="course_author"></result>
+        <result property="courseClassNum" column="course_class_num"></result>
+        <result property="courseSprice" column="course_sprice"></result>
+        <result property="courseStudyPeoples" column="course_study_peoples"></result>
+        <result property="courseImgurl" column="course_imgurl"></result>
+        <result property="courseOtherImgurl" column="course_other_imgurl"></result>
+        <result property="courseTeacherIntro" column="course_teacher_intro"></result>
+        <result property="courseFeatureIntroI" column="course_feature_intro_i"></result>
+        <result property="courseFeatureIntroII" column="course_feature_intro_ii"></result>
+        <result property="courseTitle" column="course_title"></result>
+        <result property="coursePeoples" column="course_peoples"></result>
+        <result property="courseTableImgurl" column="course_table_imgurl"></result>
+        <result property="coursePurchaseAttention" column="course_purchase_attention"></result>
+        <result property="courseCollege" column="course_college"></result>
+        <result property="id" column="id"></result>
+        <result property="checked" column="checked"></result>
+    </resultMap>
+    <!-- 通过ID查询出来的课程存入到购物车的数据库中-->
+    <insert id="inShopping" parameterType="com.qf.domain.ShoppingCar1">
+        insert into shoppingcar ( course_id, course_title_imgurl,course_subtitle,course_author,course_sprice,id,course_summary,course_class_num,course_study_peoples,
+        course_imgurl,course_other_imgurl,course_teacher_intro,course_feature_intro_i,course_feature_intro_ii,course_title,
+        course_peoples,course_table_imgurl,course_purchase_attention,course_college,course_update_time)
+     values (#{courseId,jdbcType=VARCHAR},#{courseTitleImgurl,jdbcType=VARCHAR}, #{courseSubtitle,jdbcType=VARCHAR},
+      #{courseAuthor,jdbcType=INTEGER},#{courseSprice,jdbcType=INTEGER},#{id,jdbcType=INTEGER},#{courseSummary},#{courseClassNum},#{courseStudyPeoples},
+      #{courseImgurl},#{courseOtherImgurl},#{courseTeacherIntro},#{courseFeatureIntroI},#{courseFeatureIntroII},#{courseTitle},
+      #{coursePeoples},#{courseTableImgurl},#{coursePurchaseAttention},#{courseCollege},#{courseUpdateTime})
+</insert>
+    <!--前端出入用户ID查询对应的代发货信息-->
+    <select id="chaShoppingCarAll" parameterType="int" resultMap="shoppingCarResult" >
+        select * from shoppingcar where id=#{id}
+    </select>
+</mapper>

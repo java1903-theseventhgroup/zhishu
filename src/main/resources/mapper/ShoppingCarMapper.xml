@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.dao.ShoppingCarDao">
+    <resultMap id="shoppingCarResult" type="com.qf.domain.ShoppingCar">
+        <id property="courseId" column="course_id"></id>
+        <result property="courseTitleImgurl" column="course_title_imgurl"></result>
+        <result property="courseSubtitle" column="course_subtitle"></result>
+        <result property="courseSummary" column="course_summary"></result>
+        <result property="courseAuthor" column="course_author"></result>
+        <result property="courseClassNum" column="course_class_num"></result>
+        <result property="courseSprice" column="course_sprice"></result>
+        <result property="courseStudyPeoples" column="course_study_peoples"></result>
+        <result property="courseImgurl" column="course_imgurl"></result>
+        <result property="courseOtherImgurl" column="course_other_imgurl"></result>
+        <result property="courseTeacherIntro" column="course_teacher_intro"></result>
+        <result property="courseFeatureIntroI" column="course_feature_intro_i"></result>
+        <result property="courseFeatureIntroII" column="course_feature_intro_ii"></result>
+        <result property="courseTitle" column="course_title"></result>
+        <result property="coursePeoples" column="course_peoples"></result>
+        <result property="courseTableImgurl" column="course_table_imgurl"></result>
+        <result property="coursePurchaseAttention" column="course_purchase_attention"></result>
+        <result property="courseCollege" column="course_college"></result>
+        <result property="id" column="id"></result>
+        <result property="checked" column="checked"></result>
+    </resultMap>
+
+    <!-- shoppingCar1.setId(id);
+        shoppingCar1.setCourseId(courseId);
+        shoppingCar1.setCourseTitleImgurl(courseTitleImgurl);
+        shoppingCar1.setCourseSubtitle(courseSubtitle);
+        shoppingCar1.setCourseAuthor(courseAuthor);
+        shoppingCar1.setCourseSprice(courseSprice);
+        shoppingCar1.setCourseSummary(courseSummary);
+        shoppingCar1.setCourseClassNum(courseClassNum);
+        shoppingCar1.setCourseStudyPeoples(courseStudyPeoples);
+        shoppingCar1.setCourseImgurl(courseImgurl);
+        shoppingCar1.setCourseOtherImgurl(courseOtherImgurl);
+        shoppingCar1.setCourseTeacherIntro(courseTeacherIntro);
+        shoppingCar1.setCourseFeatureIntroI(courseFeatureIntroI);
+        shoppingCar1.setCourseFeatureIntroII(courseFeatureIntroII);
+        shoppingCar1.setCourseTitle(courseTitle);
+        shoppingCar1.setCoursePeoples(coursePeoples);
+        shoppingCar1.setCourseTableImgurl(courseTableImgurl);
+        shoppingCar1.setCoursePurchaseAttention(coursePurchaseAttention);
+        shoppingCar1.setCourseCollege(courseCollege);-->
+
+   <!-- 通过ID查询出来的课程存入到购物车的数据库中-->
+    <insert id="addCourse" parameterType="com.qf.domain.ShoppingCar">
+        insert into shopping ( course_id, course_title_imgurl,course_subtitle,course_author,course_sprice,id,course_summary,course_class_num,course_study_peoples,
+        course_imgurl,course_other_imgurl,course_teacher_intro,course_feature_intro_i,course_feature_intro_ii,course_title,
+        course_peoples,course_table_imgurl,course_purchase_attention,course_college,course_update_time)
+     values (#{courseId,jdbcType=VARCHAR},#{courseTitleImgurl,jdbcType=VARCHAR}, #{courseSubtitle,jdbcType=VARCHAR},
+      #{courseAuthor,jdbcType=INTEGER},#{courseSprice,jdbcType=INTEGER},#{id,jdbcType=INTEGER},#{courseSummary},#{courseClassNum},#{courseStudyPeoples},
+      #{courseImgurl},#{courseOtherImgurl},#{courseTeacherIntro},#{courseFeatureIntroI},#{courseFeatureIntroII},#{courseTitle},
+      #{coursePeoples},#{courseTableImgurl},#{coursePurchaseAttention},#{courseCollege},#{courseUpdateTime})
+</insert>
+    <!--根据当前用户登录的Id,查询购物车里对应的所有购买课程的总钱数-->
+    <select id="findMoney" parameterType="int" resultType="double">
+        SELECT SUM(course_sprice) FROM shopping WHERE id=#{id}
+    </select>
+    <!--根据当前用户ID查询购物车对应的所有对象-->
+    <select id="findAllShoppingCar" resultMap="shoppingCarResult" parameterType="int">
+        select * from shopping where id=#{id}
+    </select>
+    <!--根据当前用户ID，删除购物车对应的对象，实现购物车支付成功-->
+    <delete id="uptShoppingCar" parameterType="int">
+        delete from shopping where id=#{id}
+    </delete>
+   <!-- 复选框删除多个对象-->
+    <delete id="deletShoppingCarAll" parameterType="List">
+        delete from shopping where course_id in
+        <foreach collection="list" item="courseId" open="(" close=")" separator=",">
+            #{courseId}
+        </foreach>
+        and
+        id=#{id}
+    </delete>
+
+   <!-- 复选框查询购物车所选对象的全部信息-->
+    <select id="selShoppingCarAll" parameterType="List" resultMap="shoppingCarResult">
+        select * from shopping where course_id in
+        <foreach collection="list" item="courseId" open="(" close=")" separator=",">
+            #{courseId}
+        </foreach>
+        and
+        id=#{id}
+    </select>
+</mapper>

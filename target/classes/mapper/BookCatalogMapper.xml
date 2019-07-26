@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.dao.BookCatalogDao">
+    <resultMap id="rm" type="com.qf.domain.BookCatalog">
+        <id property="bookCatalogId" column="book_catalog_id"></id>
+        <result property="bookCatalogNum" column="book_catalog_num"></result>
+        <result property="bookCatalogName" column="book_catalog_name"></result>
+        <result property="bookCatalogInfo" column="book_catalog_info"></result>
+        <result property="bookRedioUrl" column="book_redio_url "></result>
+        <result property="bId" column="b_id"></result>
+    </resultMap>
+    <select id="findBookCatalogByName" resultMap="rm">
+     SELECT book_catalog_name FROM book_catalog WHERE b_id=(SELECT book_id FROM e_books WHERE book_subtitle =#{bookSubtitle}) ORDER BY book_catalog_num  ASC
+    </select>
+</mapper>

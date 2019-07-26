@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.dao.BookDao">
+    <resultMap id="rm" type="com.qf.domain.Book">
+        <id property="bookId" column="book_id"></id>
+        <result property="bookSubtitle" column="book_subtitle"></result>
+        <result property="booKeditRecomend" column="booK_edit_recomend"></result>
+        <result property="bookSprice" column="book_sprice"></result>
+        <result property="bookTime" column="book_time"></result>
+        <result property="bookAuthor" column="book_author"></result>
+        <result property="bookData" column="book_data"></result>
+        <result property="bookContent" column="book_content"></result>
+        <result property="bookPublisher" column="book_publisher"></result>
+        <result property="bookPublisherIntro" column="book_publisher_intro"></result>
+        <result property="bookIntro" column="book_intro"></result>
+        <result property="bookTts" column="book_tts"></result>
+        <result property="bookType" column="book_type"></result>
+        <result property="bookImgUrl" column="book_img_url"></result>
+        <result property="type" column="type"></result>
+        <result property="bookClassId" column="book_class_id"></result>
+
+    </resultMap>
+    <resultMap id="bookHistoryMap" type="com.qf.domain.BookHistory">
+        <id property="bookId" column="book_id"/>
+        <result property="bookAuthor" column="book_author"/>
+        <result property="bookSubtile" column="book_subtile"/>
+    </resultMap>
+    <select id="findAll" resultMap="rm">
+        select * from e_books
+    </select>
+    <select id="findType" resultMap="rm">
+        select * from e_books where book_Type=#{bookType}
+    </select>
+    <select id="findS2" resultMap="rm">
+        SELECT * FROM e_books WHERE book_class_id=(SELECT classification_id FROM classifications WHERE classification=#{classification})
+    </select>
+    <select id="findSujectsByName" resultMap="rm">
+         SELECT * FROM e_books WHERE book_class_id in (SELECT classification_id FROM classifications WHERE sub_id=(SELECT subject_id FROM subjects WHERE SUBJECT=#{subject}))
+    </select>
+
+
+    <select id="findByNameOrAuthor"  resultMap="rm">
+        <if test="subject!=null">
+            <bind name="bookSubtitle" value="'%'+subject+'%'"/>
+        </if>
+        <if test="subject!=null ">
+            <bind name="bookAuthor" value="'%'+subject+'%'"/>
+        </if>
+        select * from e_books
+        <where>
+            book_subtitle like #{bookSubtitle}
+            OR book_author LIKE #{bookAuthor}
+        </where>
+    </select>
+
+
+
+    <select id="getBookHistory" resultMap="bookHistoryMap">
+        SELECT * FROM book_history
+    </select>
+    <insert id="addHistory" parameterType="com.qf.domain.BookHistory" >
+        INSERT INTO book_history (book_author,book_subtile) VALUES (#{bookAuthor},#{bookSubtile})
+    </insert>
+    <delete id="deleteHistory" parameterType="string">
+        DELETE FROM book_history WHERE book_subtile=#{bookSubtile}
+    </delete>
+    <delete id="deleteAll">
+        DELETE FROM book_history
+    </delete>
+</mapper>
